@@ -11,7 +11,7 @@
             <tr v-for="(user, index) in users" :key="index">
                 <td>
                     <div v-if="user.isActive">
-                        <input type="text" name="firstName" v-model="user.firstName">
+                        <input :class="{ 'error': !user.firstName }" type="text" name="firstName" v-model="user.firstName">
                     </div>
                     <div v-else>
                         <span>{{ user.firstName }}</span>
@@ -19,7 +19,7 @@
                 </td>
                 <td>
                     <div v-if="user.isActive">
-                        <input type="text" name="secondName" v-model="user.secondName">
+                        <input :class="{ 'error': !user.secondName }" type="text" name="secondName" v-model="user.secondName">
                     </div>
                     <div v-else>
                         <span>{{ user.secondName }}</span>
@@ -27,7 +27,7 @@
                 </td>
                 <td>
                     <div v-if="user.isActive">
-                        <button class="btn btn-save" @click="save(index)">Сохранить</button>
+                        <button class="btn btn-save" @click="save(index)" :disabled="isButtonDisabled(user)">Сохранить</button>
                     </div>
                     <div v-else>
                         <button class="btn" @click="edit(index)">Редактировать</button>
@@ -43,7 +43,7 @@
                     <input type="text" name="secondName" placeholder="Введите значение" v-model="newUser.secondName">
                 </td>
                 <td>
-                    <button class="btn" @click="add">Добавить</button>
+                    <button class="btn" @click="add" :disabled="isButtonDisabled(newUser)">Добавить</button>
                 </td>
             </tr>
             
@@ -106,6 +106,10 @@ export default {
             let user = this.users[index];
             this.$store.dispatch('removeUser', user);
         },
+
+        isButtonDisabled(user) {
+            return !(user.firstName && user.secondName);
+        }
     }
 }
 </script>
@@ -125,17 +129,29 @@ export default {
     }
     input {
         max-width: 100%;
+        height: 30px;
+        border: 1px solid #2c3e50;
         color: #2c3e50;
         font-size: 16px;
+    }
+    input.error {
+        border: 1px solid #fa0f0f;
     }
     .btn {
         display: block;
         width: 100%;
+        height: 30px;
         margin: 5px;
         padding: 5px;
         color: white;
         background-color: #2c3e50;
         border: 1px solid #2c3e50;
+        cursor: pointer;
+    }
+    .btn:disabled {
+        background-color: grey;
+        border: 1px solid grey;
+        cursor: none;
     }
     .btn-remove {
         background-color: #fa0f0f;
