@@ -1,6 +1,8 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 
+const url = 'http://localhost:3123/';
+
 export default createStore({
   state: {
     users: null
@@ -27,23 +29,23 @@ export default createStore({
 
   actions: {
     getUsers: async (context) => {
-      let {data} = await axios.get('http://localhost:3123/');
+      let {data} = await axios.get(url);
       context.commit('setUsers', data);
     },
 
     addUser: async (context, payload) => {
-      let {data} = await axios.post('http://localhost:3123/', payload);
+      let {data} = await axios.post(url, payload);
       context.commit('addUser', data);
     },
 
     updateUser: async (context, payload) => {
       let uuid = payload.uuid;
-      axios.put(`http://localhost:3123/${uuid}`, payload);
+      axios.put(url + uuid, payload);
     },
 
     removeUser: async (context, payload) => {
       let uuid = payload.uuid;
-      axios.delete(`http://localhost:3123/${uuid}`, payload)      
+      axios.delete(url + uuid, payload)  
       .then(() => {
         context.commit('removeUser', payload);
       });
