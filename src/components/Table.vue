@@ -56,7 +56,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-    name: 'List',
+    name: 'Table',
 
     data() {
         return {
